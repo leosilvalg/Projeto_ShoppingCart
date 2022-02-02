@@ -20,7 +20,7 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-  console.log(section);
+  // console.log(section);
   return section;
 }
 
@@ -43,13 +43,20 @@ function createCartItemElement({ sku, name, salePrice }) {
 async function products(param) {
   const section = document.querySelector('.items');
   const api = await fetchProducts(param);
-  console.log(api);
+  // console.log(api);
   await api.results.forEach((index) => {
     const objeto = { sku: index.id, name: index.title, image: index.thumbnail };
     // console.log(objeto);
     const item = createProductItemElement(objeto);
     section.appendChild(item);
   });
+}
+
+async function carrinho(param) {
+  const section = document.querySelector('.cart__item');
+  const api2 = await fetchItem(param);
+
+  section.appendChild(api2);
 }
 
 window.onload = () => { 

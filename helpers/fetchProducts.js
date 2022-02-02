@@ -5,7 +5,7 @@ const fetchProducts = async (type) => {
   try {
     const response = await fetch(`${url}${type}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     return error;
