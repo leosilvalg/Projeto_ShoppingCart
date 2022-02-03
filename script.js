@@ -80,9 +80,14 @@ const carrinhoItens = document.querySelector('.cart__items');
   carrinhoItens.innerHTML = '';
 };
 
-const botaoApaga = document.querySelector('.empty-cart');
-
 window.onload = async () => { 
+  const container = document.querySelector('.container');
+  const carregando = document.createElement('p');
+  carregando.innerHTML = 'carregando...';
+  carregando.className = 'loading';
+  container.appendChild(carregando);
   await products('computador');
+  carregando.remove();
+  const botaoApaga = document.querySelector('.empty-cart');
   botaoApaga.addEventListener('click', apagaCarrinho);
 };
