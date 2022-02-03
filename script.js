@@ -75,6 +75,14 @@ test.addEventListener('click', (e) => {
   }
 });
 
+const apagaCarrinho = () => {
+const carrinhoItens = document.querySelector('.cart__items');
+  carrinhoItens.innerHTML = '';
+};
+
+const botaoApaga = document.querySelector('.empty-cart');
+
 window.onload = async () => { 
   await products('computador');
+  botaoApaga.addEventListener('click', apagaCarrinho);
 };
