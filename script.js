@@ -11,7 +11,7 @@ function soma() {
   produtos.forEach((index) => {
     const string = index.innerText.split(' ');
     const somando = string[string.length - 1];
-    const valor = somando.replace(/[$]/, '');
+    const valor = somando.replace('$', '');
     const converte = Number(valor);
     somaTotal += converte;
   });
@@ -82,6 +82,7 @@ async function products(param) {
 
 const carrinho = async (e) => {
   const teste = e.target.parentNode.firstChild.innerText;
+  console.log(teste);
   const api2 = await fetchItem(teste);
   const { id, title, price } = api2;
   const obj = {
