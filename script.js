@@ -1,3 +1,9 @@
+const itemNoCarrinho = document.querySelector('.cart__items');
+const botaoApaga = document.querySelector('.empty-cart');
+const test = document.querySelector('body');
+
+// Função para somar os valores dos itens
+
 function soma() {
   const tag = document.querySelector('.total-price');
   const produtos = document.querySelectorAll('.cart__item');
@@ -38,13 +44,15 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
+
+// Função para remover os itens do carrinho pelo click, alem de atualizar o localStorage e também a soma
 
 function cartItemClickListener(event) {
-  // coloque seu código aqui
   event.target.remove();
+  localStorage.setItem('cartItems', itemNoCarrinho.innerHTML);
   soma();
 }
 
@@ -55,6 +63,8 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
+// Função assincrona para carregar os itens da API no body no HTML 
 
 async function products(param) {
   const section = document.querySelector('.items');
@@ -68,7 +78,8 @@ async function products(param) {
   });
 }
 
-const cart = document.querySelector('.cart__items');
+// Função para adicionar os itens clicados ao carrinho, além de salvar os mesmos no localStorage e realizar a soma dos mesmos 
+
 const carrinho = async (e) => {
   const teste = e.target.parentNode.firstChild.innerText;
   const api2 = await fetchItem(teste);
@@ -78,12 +89,14 @@ const carrinho = async (e) => {
     name: title,
     salePrice: price,
   };
-  console.log(obj);
-  cart.appendChild(createCartItemElement(obj));
+  // console.log(obj);
+  itemNoCarrinho.appendChild(createCartItemElement(obj));
+  localStorage.setItem('cartItems', itemNoCarrinho.innerHTML);
   soma();
 };
 
-const test = document.querySelector('body');
+// Função que vai chamar a anterior com base no click, as duas são dependentes
+
 test.addEventListener('click', (e) => {
   if (e.target.classList.contains('item__add')) {
     e.preventDefault();
@@ -91,11 +104,17 @@ test.addEventListener('click', (e) => {
   }
 });
 
+// Funçao par ativar o botão de limpar o carrinho, alem de atualizar a soma e o localStorage
+
 const apagaCarrinho = () => {
-const carrinhoItens = document.querySelector('.cart__items');
-  carrinhoItens.innerHTML = '';
+  itemNoCarrinho.innerHTML = '';
   soma();
+  localStorage.setItem('cartItems', itemNoCarrinho.innerHTML);
 };
+
+botaoApaga.addEventListener('click', apagaCarrinho);
+
+// Funções e operaçoes realizadas no carregamento da página. Criação do loading, carregamento dos itens no body, remoção do loading, carregamento do localStorage(com a possibilidade de excluir os itens pelo click após o carregamento), alem de mater a soma na atualização;
 
 window.onload = async () => { 
   const container = document.querySelector('.container');
@@ -105,6 +124,7 @@ window.onload = async () => {
   container.appendChild(carregando);
   await products('computador');
   carregando.remove();
-  const botaoApaga = document.querySelector('.empty-cart');
-  botaoApaga.addEventListener('click', apagaCarrinho);
+  itemNoCarrinho.innerHTML = localStorage.getItem('cartItems');
+  itemNoCarrinho.addEventListener('click', cartItemClickListener);
+  soma();
 };
